@@ -73,14 +73,14 @@ shipments = []
 
 open("planet_express_logs").each do |line|
   sentence = line.chomp
-  words = []   #initialize variables
+  words = []
   word = ""
-  sentence.chars.each do |c|   #loop through the characters in the sentence
+  sentence.chars.each do |c|
     if c != ","
-      word << c    #add the char to the word unless we've reached a space or the end of the sentence
+      word << c
     else
-      words << word  #if space or period is reached then the word is complete - add it to our array
-      word = ""      #start a new word for the next trip through the loop
+      words << word
+      word = ""
     end
   end
   words << word
