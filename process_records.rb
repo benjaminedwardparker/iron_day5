@@ -22,6 +22,131 @@
 
 # BONUS - uses classes for each shipment; but not necessary
 
-open("planet_express_logs").each do |line|
-  p line.chomp
+
+class Employee;
+  def initialize(name)
+    @name = name
+    @trips = 0
+    @bonus = 0
+  end
+  def made_trip(profit)
+    @trips += 1
+    @bonus += profit/10
+  end
+  def trips
+    return @trips
+  end
+  def bonus
+    return @bonus
+  end
 end
+
+class Shipment;
+  def initialize(planet, item_shipped, quantity, profit)
+    @planet = planet
+    @item_shipped = item_shipped
+    @quantity = quantity
+    @profit = profit
+  end
+  def show
+    puts "Planet = #{@planet}"
+    puts "Item shipped = #{@item_shipped}"
+    puts "Quantity = #{@quantity}"
+    puts "Profit = #{@profit}"
+  end
+  def planet
+    return @planet
+  end
+  def item_shipped
+    return @item_shipped
+  end
+  def quantity
+    return @quantity
+  end
+  def profit
+    return @profit
+  end
+end
+
+
+shipments = []
+
+open("planet_express_logs").each do |line|
+  sentence = line.chomp
+  words = []   #initialize variables
+  word = ""
+  sentence.chars.each do |c|   #loop through the characters in the sentence
+    if c != ","
+      word << c    #add the char to the word unless we've reached a space or the end of the sentence
+    else
+      words << word  #if space or period is reached then the word is complete - add it to our array
+      word = ""      #start a new word for the next trip through the loop
+    end
+  end
+  words << word
+  #p words
+  shipment = Shipment.new(words[0], words[1], words[2].to_i, words[3].to_i)
+#  shipment.show
+  shipments << shipment
+end
+
+
+money_made_this_week = 0
+profit_by_planet = {
+  Mercury: 0,
+  Earth:   0,
+  Moon:    0,
+  Mars:    0,
+  Jupiter: 0,
+  Saturn:  0,
+  Uranus:  0,
+  Pluto:   0,
+}
+fry = Employee.new("Fry")
+amy = Employee.new("Amy")
+bender = Employee.new("Bender")
+leela = Employee.new("Leela")
+
+shipments.each do |shipment|
+  money_made_this_week += shipment.profit
+  profit_by_planet[shipment.planet.to_sym] += shipment.profit
+  if shipment.planet == "Earth"
+    fry.made_trip(shipment.profit)
+  else
+    if shipment.planet == "Mars"
+      amy.made_trip(shipment.profit)
+    else
+      if shipment.planet == "Uranus"
+        bender.made_trip(shipment.profit)
+      else
+        leela.made_trip(shipment.profit)
+      end
+    end
+  end
+end
+
+puts "Money made this week = #{money_made_this_week}"
+puts "Profit by planet:"
+puts profit_by_planet
+puts ""
+puts "Fry made #{fry.trips} trips and made $#{fry.bonus}."
+puts "Amy made #{amy.trips} trips and made $#{amy.bonus}."
+puts "Bender made #{bender.trips} trips and made $#{bender.bonus}"
+puts "Leela made #{leela.trips} trips and made $#{leela.bonus}"
+
+# How much money did we make this week?
+# How much money did we make broken down by planet?
+# ie.. how much did we make shipping to Earth? Mars? Saturn? etc.
+
+# Also, bonuses are paid to employees who pilot the Planet Express
+# Different employees have favorite destinations they always pilot to
+# Fry - pilots to Earth (because he isn't allowed into space)
+# Amy - pilots to Mars (so she can visit her family)
+# Bender - pilots to Uranus (teeheee...)
+# Leela - pilots everywhere else because she is the only responsible one
+
+# How many trips did each employee pilot?
+# They get a bonus of 10% of the money for the shipment as the bonus
+# How much of a bonus did each employee get?
+
+# BONUS - uses classes for each shipment; but not necessary
