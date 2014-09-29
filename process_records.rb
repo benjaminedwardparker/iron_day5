@@ -22,8 +22,11 @@
 
 # BONUS - uses classes for each shipment; but not necessary
 
-
+require 'pry'
 class Employee;
+  attr_accessor :name,
+                :trips,
+                :bonus
   def initialize(name)
     @name = name
     @trips = 0
@@ -33,15 +36,19 @@ class Employee;
     @trips += 1
     @bonus += profit/10
   end
-  def trips
-    return @trips
-  end
-  def bonus
-    return @bonus
-  end
+  # def trips
+  #   return @trips
+  # end
+  # def bonus
+  #   return @bonus
+  # end
 end
 
 class Shipment;
+  attr_accessor :planet,
+                :item_shipped,
+                :quantity,
+                :profit
   def initialize(planet, item_shipped, quantity, profit)
     @planet = planet
     @item_shipped = item_shipped
@@ -54,18 +61,18 @@ class Shipment;
     puts "Quantity = #{@quantity}"
     puts "Profit = #{@profit}"
   end
-  def planet
-    return @planet
-  end
-  def item_shipped
-    return @item_shipped
-  end
-  def quantity
-    return @quantity
-  end
-  def profit
-    return @profit
-  end
+  # def planet             # these methods not needed with use of attr_accessors
+  #   return @planet
+  # end
+  # def item_shipped
+  #   return @item_shipped
+  # end
+  # def quantity
+  #   return @quantity
+  # end
+  # def profit
+  #   return @profit
+  # end
 end
 
 
@@ -110,19 +117,31 @@ leela = Employee.new("Leela")
 shipments.each do |shipment|
   money_made_this_week += shipment.profit
   profit_by_planet[shipment.planet.to_sym] += shipment.profit
-  if shipment.planet == "Earth"
+  case shipment.planet
+  when "Earth"
     fry.made_trip(shipment.profit)
+  when "Mars"
+    amy.made_trip(shipment.profit)
+  when "Uranus"
+    bender.made_trip(shipment.profit)
   else
-    if shipment.planet == "Mars"
-      amy.made_trip(shipment.profit)
-    else
-      if shipment.planet == "Uranus"
-        bender.made_trip(shipment.profit)
-      else
-        leela.made_trip(shipment.profit)
-      end
-    end
+    leela.made_trip(shipment.profit)
   end
+
+
+  # if shipment.planet == "Earth"
+  #   fry.made_trip(shipment.profit)
+  # else
+  #   if shipment.planet == "Mars"
+  #     amy.made_trip(shipment.profit)
+  #   else
+  #     if shipment.planet == "Uranus"
+  #       bender.made_trip(shipment.profit)
+  #     else
+  #       leela.made_trip(shipment.profit)
+  #     end
+  #   end
+  # end
 end
 
 puts "Money made this week = #{money_made_this_week}"
